@@ -1,0 +1,41 @@
+<ng-container
+  #generator="appRandomNumber"
+  appRandomNumber
+  (numberGenerated)="onNumberGenerated($event)"
+></ng-container>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Table Test</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p></p>
+    <p>
+      {{ firstNumber }} * {{ secondNumber }} =
+      <input
+        type="text"
+        name="inputAnswer"
+        [(ngModel)]="inputAnswer"
+        ng-required="true"
+      />
+    </p>
+    <p></p>
+    <p>Your Answer: {{ inputAnswer }}</p>
+    <p>Correct Answer: {{ calAnswer }}</p>
+    <p>Result: {{ answerCheck }}</p>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button *ngIf="inputAnswer != ''" mat-button (click)="checkAnswer()">
+      Submit
+    </button>
+    <button
+      *ngIf="answerCheck != ''"
+      mat-button
+      (click)="generator.generateNumbers()"
+    >
+      Next
+    </button>
+  </mat-card-actions>
+</mat-card>
