@@ -1,8 +1,8 @@
-<ng-container
+<!-- <ng-container
   #generator="appRandomNumber"
   appRandomNumber
   (numberGenerated)="onNumberGenerated($event)"
-></ng-container>
+></ng-container> -->
 
 <mat-card>
   <mat-card-header>
@@ -23,18 +23,23 @@
     <p></p>
     <p>Your Answer: {{ inputAnswer }}</p>
     <p>Correct Answer: {{ calAnswer }}</p>
-    <p>Result: {{ answerCheck }}</p>
+    <p>
+      Result:
+      <span
+        [ngStyle]="{
+          'font-weight': 'bold',
+          color: isCorrectAnswer ? 'green' : 'red'
+        }"
+        >{{ answerCheck }}</span
+      >
+    </p>
   </mat-card-content>
 
   <mat-card-actions>
     <button *ngIf="inputAnswer != ''" mat-button (click)="checkAnswer()">
       Submit
     </button>
-    <button
-      *ngIf="answerCheck != ''"
-      mat-button
-      (click)="generator.generateNumbers()"
-    >
+    <button *ngIf="answerCheck != ''" mat-button (click)="getNextQuestion()">
       Next
     </button>
   </mat-card-actions>
