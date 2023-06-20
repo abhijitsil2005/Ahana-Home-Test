@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { randomNumber } from './numberModel';
+import { randomNumber, result } from './numberModel';
 
 @Component({
   selector: 'app-random-number',
@@ -11,6 +11,7 @@ export class RandomNumberComponent {
   randomNumbers: randomNumber;
   tablesList: randomNumber[] = [];
   randomTablesList: randomNumber[];
+  wrongAnswerList: result[] = [];
   firstNumber: number;
   secondNumber: number;
   inputAnswer: string = '';
@@ -18,12 +19,14 @@ export class RandomNumberComponent {
   calAnswer: string;
   isCorrectAnswer: boolean = false;
   currentIndex: number = 0;
-  startNum = 40;
+  isTestComplete: boolean = false;
+  score: string = '';
+  startNum = 41;
   lastNum = 50;
 
   ngOnInit(): void {
     for (this.startNum; this.startNum < this.lastNum; this.startNum++) {
-      for (let sn = 1; sn <= 10; sn++) {
+      for (let sn = 1; sn <= 5; sn++) {
         let mul = new randomNumber();
         mul['firstNumber'] = this.startNum;
         mul['secondNumber'] = sn;
@@ -31,13 +34,8 @@ export class RandomNumberComponent {
       }
     }
 
-    console.log('before shuffling');
-    console.log(this.tablesList);
     this.randomTablesList = this.shuffleTableList(this.tablesList);
-    console.log('after shuffling');
-    console.log(this.randomTablesList);
 
-    console.log('on init is called');
     this.firstNumber = this.randomTablesList[this.currentIndex].firstNumber;
     this.secondNumber = this.randomTablesList[this.currentIndex].secondNumber;
     this.currentIndex++;
@@ -56,24 +54,20 @@ export class RandomNumberComponent {
     return tabList;
   }
 
-  // onNumberGenerated(randomNumbers: randomNumber): void {
-  //   console.log('called');
-  //   this.inputAnswer = '';
-  //   this.calAnswer = '';
-  //   this.answerCheck = '';
-  //   this.firstNumber = randomNumbers.firstNumber;
-  //   this.secondNumber = randomNumbers.secondNumber;
-  //   console.log(randomNumbers);
-  // }
-
   getNextQuestion() {
     console.log('next number is called');
     if (this.currentIndex < this.randomTablesList.length) {
       this.firstNumber = this.randomTablesList[this.currentIndex].firstNumber;
       this.secondNumber = this.randomTablesList[this.currentIndex].secondNumber;
       this.currentIndex++;
+      console.log(this.currentIndex);
     } else {
-      this.answerCheck = 'all done!';
+      console.log('inside else condition');
+      this.isTestComplete = true;
+      this.score = ` ${
+        this.randomTablesList.length - this.wrongAnswerList.length
+      } / ${this.randomTablesList.length} `;
+      console.log(this.score);
     }
     this.inputAnswer = '';
     this.calAnswer = '';
@@ -91,6 +85,12 @@ export class RandomNumberComponent {
     } else {
       this.answerCheck = 'Wrong';
       this.isCorrectAnswer = false;
+      let wrongAns = new result();
+      wrongAns.firstNumber = this.firstNumber;
+      wrongAns.secondNumber = this.secondNumber;
+      wrongAns.inputAnswer = +this.inputAnswer;
+      wrongAns.correctAnswer = calAns;
+      this.wrongAnswerList.push(wrongAns);
     }
 
     return this.answerCheck;

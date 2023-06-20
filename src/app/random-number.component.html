@@ -9,7 +9,7 @@
     <mat-card-title>Table Test</mat-card-title>
   </mat-card-header>
 
-  <mat-card-content>
+  <mat-card-content *ngIf="!isTestComplete">
     <p></p>
     <p>
       {{ firstNumber }} * {{ secondNumber }} =
@@ -33,6 +33,28 @@
         >{{ answerCheck }}</span
       >
     </p>
+  </mat-card-content>
+  <mat-card-content *ngIf="isTestComplete">
+    <p></p>
+    <p style="font-weight:bold">Test Results:</p>
+    <p>Score: {{ score }}</p>
+    <p>Wrong Answers:</p>
+    <div>
+      <ul>
+        <li
+          *ngFor="let item of wrongAnswerList; let i = index"
+          [attr.data-index]="i"
+        >
+          {{ item.firstNumber }} * {{ item.secondNumber }}
+          -
+          <span style="color:red">Your Answer: {{ item.inputAnswer }}</span>
+          ;
+          <span style="color:green">
+            Correct Answer: {{ item.correctAnswer }}
+          </span>
+        </li>
+      </ul>
+    </div>
   </mat-card-content>
 
   <mat-card-actions>
