@@ -21,7 +21,7 @@ export class RandomNumberComponent {
   currentIndex: number = 0;
   isTestComplete: boolean = false;
   score: string = '';
-  startNum = 41;
+  startNum = 35;
   lastNum = 50;
 
   ngOnInit(): void {
