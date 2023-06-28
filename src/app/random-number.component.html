@@ -11,9 +11,12 @@
 
   <mat-card-content *ngIf="!isTestComplete">
     <p></p>
+    <p>{{ timeLeft }} Seconds Left....</p>
+    <p></p>
     <p>
       {{ firstNumber }} * {{ secondNumber }} =
       <input
+        [attr.disabled]="isDisabled ? '' : null"
         type="text"
         name="inputAnswer"
         [(ngModel)]="inputAnswer"
@@ -51,6 +54,10 @@
           ;
           <span style="color:green">
             Correct Answer: {{ item.correctAnswer }}
+          </span>
+          ;
+          <span style="color:orange">
+            Time Taken: {{ item.timeTaken }} seconds
           </span>
         </li>
       </ul>

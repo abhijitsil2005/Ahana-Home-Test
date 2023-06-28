@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { randomNumber, result } from './numberModel';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-random-number',
@@ -21,8 +22,13 @@ export class RandomNumberComponent {
   currentIndex: number = 0;
   isTestComplete: boolean = false;
   score: string = '';
-  startNum = 35;
-  lastNum = 50;
+  timer: number = 6;
+  timeLeft: number;
+  interval: any;
+  subscribeTimer: any;
+  isDisabled: boolean = false;
+  startNum = 3;
+  lastNum = 4;
 
   ngOnInit(): void {
     for (this.startNum; this.startNum < this.lastNum; this.startNum++) {
@@ -43,6 +49,8 @@ export class RandomNumberComponent {
     this.calAnswer = '';
     this.answerCheck = '';
     this.isCorrectAnswer = false;
+    this.timeLeft = this.timer;
+    this.startTimer();
   }
 
   shuffleTableList(tabList: randomNumber[]): randomNumber[] {
@@ -61,6 +69,7 @@ export class RandomNumberComponent {
       this.secondNumber = this.randomTablesList[this.currentIndex].secondNumber;
       this.currentIndex++;
       console.log(this.currentIndex);
+      this.startTimer();
     } else {
       console.log('inside else condition');
       this.isTestComplete = true;
@@ -68,11 +77,13 @@ export class RandomNumberComponent {
         this.randomTablesList.length - this.wrongAnswerList.length
       } / ${this.randomTablesList.length} `;
       console.log(this.score);
+      this.pauseTimer();
     }
     this.inputAnswer = '';
     this.calAnswer = '';
     this.answerCheck = '';
     this.isCorrectAnswer = false;
+    this.timeLeft = this.timer;
   }
 
   checkAnswer(): string {
@@ -90,9 +101,39 @@ export class RandomNumberComponent {
       wrongAns.secondNumber = this.secondNumber;
       wrongAns.inputAnswer = +this.inputAnswer;
       wrongAns.correctAnswer = calAns;
+      wrongAns.timeTaken = this.timer - this.timeLeft;
       this.wrongAnswerList.push(wrongAns);
     }
-
+    this.pauseTimer();
     return this.answerCheck;
+  }
+
+  // oberserableTimer() {
+  //   const source = timer(1000);
+  //   const abc = source.subscribe((val) => {
+  //     console.log(val, '-');
+  //     if (val < this.timeLeft) {
+  //       this.subscribeTimer = this.timeLeft - val;
+  //     } else {
+  //       this.checkAnswer();
+  //       return;
+  //     }
+  //   });
+  // }
+
+  startTimer() {
+    this.isDisabled = false;
+    this.interval = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft--;
+      } else {
+        this.checkAnswer();
+      }
+    }, 1000);
+  }
+
+  pauseTimer() {
+    clearInterval(this.interval);
+    this.isDisabled = true;
   }
 }

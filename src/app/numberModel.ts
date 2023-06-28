@@ -8,4 +8,5 @@ export class result {
   secondNumber: number;
   inputAnswer: number;
   correctAnswer: number;
+  timeTaken: number;
 }
