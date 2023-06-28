@@ -22,13 +22,13 @@ export class RandomNumberComponent {
   currentIndex: number = 0;
   isTestComplete: boolean = false;
   score: string = '';
-  timer: number = 6;
+  timer: number = 60;
   timeLeft: number;
   interval: any;
   subscribeTimer: any;
   isDisabled: boolean = false;
-  startNum = 3;
-  lastNum = 4;
+  startNum = 31;
+  lastNum = 50;
 
   ngOnInit(): void {
     for (this.startNum; this.startNum < this.lastNum; this.startNum++) {
