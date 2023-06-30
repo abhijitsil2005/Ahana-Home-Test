@@ -22,7 +22,7 @@ export class RandomNumberComponent {
   currentIndex: number = 0;
   isTestComplete: boolean = false;
   score: string = '';
-  timer: number = 60;
+  timer: number = 45;
   timeLeft: number;
   interval: any;
   subscribeTimer: any;
